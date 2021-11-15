@@ -1,15 +1,30 @@
-import 'dart:html';
+//import 'dart:html';
 
+//import 'package:deliverable1/authentication/auth.dart';
+import 'package:deliverable1/authentication/sign_in.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'custom_button.dart';
+//import 'package:flutter_blue/flutter_blue.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+  final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
 
-  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return const SignIn();
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,14 +37,14 @@ class MyApp extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.orange.shade100,
-            bottom: TabBar(labelColor: Colors.black, tabs: [
+            bottom: const TabBar(labelColor: Colors.black, tabs: [
               Tab(text: "Rooms"),
               Tab(text: "Devices"),
             ]),
           ),
           drawer: Drawer(
               child: ListView(
-            children: [
+            children: const [
               ListTile(
                 leading: Icon(Icons.account_circle),
                 title: Text("User"),
@@ -40,9 +55,9 @@ class MyApp extends StatelessWidget {
               ),
             ],
           )),
-          body: TabBarView(children: [
-            RoomsScreen(),
-            DevicesScreen(),
+          body: const TabBarView(children: [
+            RoomsTab(),
+            DevicesTab(),
           ]),
         ),
       ),
@@ -50,90 +65,81 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class RoomsScreen extends StatelessWidget {
+class RoomsTab extends StatelessWidget {
+  const RoomsTab({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: GridView.count(
+    return GridView.count(
       crossAxisSpacing: 10.0,
       mainAxisSpacing: 10.0,
       crossAxisCount: 2,
-      children: [Room('Living Room'), Room('Kitchen'), Room('Bathroom')],
-    ));
-  }
-}
-
-class DevicesScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: GridView.count(
-      crossAxisSpacing: 10.0,
-      mainAxisSpacing: 10.0,
-      crossAxisCount: 2,
-      children: [Room('Lights'), Room('Heating'), Room('Electrodomestics')],
-    ));
-  }
-}
-
-class Room extends StatelessWidget {
-  @override
-  final String division;
-  const Room(this.division);
-
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Text(
-          division,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0,
-          ),
-        ),
-        Icon(
-          Icons.house,
-          color: Colors.white,
-        ),
-      ]),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(40.0),
-        color: Colors.black,
-      ),
-      margin: EdgeInsets.all(45.0),
+      children: const [
+        RoomButton("Living Room", Icon(Icons.tv, color: Colors.white)),
+        RoomButton("Bedroom", Icon(Icons.bed, color: Colors.white))
+      ],
     );
   }
 }
 
-class Device extends StatelessWidget {
-  @override
-  final String utensil;
-  const Device(this.utensil);
+class DevicesTab extends StatelessWidget {
+  const DevicesTab({Key? key}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Text(
-          utensil,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0,
-          ),
-        ),
-        Icon(
-          Icons.house,
-          color: Colors.white,
-        ),
-      ]),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(40.0),
-        color: Colors.black,
-      ),
-      margin: EdgeInsets.all(45.0),
+    return GridView.count(
+      crossAxisSpacing: 10.0,
+      mainAxisSpacing: 10.0,
+      crossAxisCount: 2,
+      children: const [
+        DeviceButton("Light", Icon(Icons.lightbulb, color: Colors.white)),
+        DeviceButton("Thermometer", Icon(Icons.thermostat, color: Colors.white))
+      ],
     );
   }
 }
+
+/*class RoomView extends StatelessWidget {
+  const RoomView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+  }
+}
+*/
+
+/*
+class CustomButton extends StatelessWidget {
+  final String button;
+  final Icon icon;
+  const CustomButton(this.button, this.icon);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton.icon(
+              onPressed: null,
+              icon: icon,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.black),
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40.0))),
+                fixedSize: MaterialStateProperty.all(const Size(200, 200)),
+              ),
+              label: Text(
+                button,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                ),
+              ),
+            )
+          ]),
+    );
+  }
+}
+*/
