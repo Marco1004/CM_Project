@@ -18,7 +18,7 @@ class DeviceButton extends StatelessWidget {
                 backgroundColor: MaterialStateProperty.all(Colors.black),
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40.0))),
-                fixedSize: MaterialStateProperty.all(const Size(200, 200)),
+                fixedSize: MaterialStateProperty.all(const Size(150, 150)),
               ),
               label: Text(
                 button,
@@ -51,7 +51,7 @@ class RoomButton extends StatelessWidget {
                 backgroundColor: MaterialStateProperty.all(Colors.black),
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40.0))),
-                fixedSize: MaterialStateProperty.all(const Size(200, 200)),
+                fixedSize: MaterialStateProperty.all(const Size(150, 150)),
               ),
               label: Text(
                 button,
