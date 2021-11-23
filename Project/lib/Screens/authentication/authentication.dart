@@ -11,8 +11,6 @@ class Authentication extends StatefulWidget {
 class _AuthenticationState extends State<Authentication> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SignIn(),
-    );
+    return const SignIn();
   }
 }

@@ -1,5 +1,8 @@
+import 'package:deliverable1/services/database.dart';
 import 'package:flutter/material.dart';
 import '../custom_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -44,6 +47,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+/*
 class RoomsTab extends StatelessWidget {
   const RoomsTab({Key? key}) : super(key: key);
 
@@ -53,13 +57,14 @@ class RoomsTab extends StatelessWidget {
       crossAxisSpacing: 10.0,
       mainAxisSpacing: 10.0,
       crossAxisCount: 2,
-      children: const [
+      children: [
         RoomButton("Living Room", Icon(Icons.tv, color: Colors.white)),
-        RoomButton("Bedroom", Icon(Icons.bed, color: Colors.white))
+        RoomButton("Bedroom", Icon(Icons.bed, color: Colors.white)),
       ],
     );
   }
 }
+*/
 
 class DevicesTab extends StatelessWidget {
   const DevicesTab({Key? key}) : super(key: key);
@@ -72,60 +77,30 @@ class DevicesTab extends StatelessWidget {
       crossAxisCount: 2,
       children: const [
         DeviceButton("Light", Icon(Icons.lightbulb, color: Colors.white)),
-        DeviceButton("Thermometer", Icon(Icons.thermostat, color: Colors.white))
+        DeviceButton(
+            "Thermometer", Icon(Icons.thermostat, color: Colors.white)),
       ],
     );
   }
 }
 
-/*class RoomView extends StatelessWidget {
-  const RoomView({Key? key}) : super(key: key);
+class RoomsTab extends StatelessWidget {
+  const RoomsTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return 
-  }
-}
-*/
-
-/*
-class CustomButton extends StatelessWidget {
-  final String button;
-  final Icon icon;
-  const CustomButton(this.button, this.icon);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton.icon(
-              onPressed: null,
-              icon: icon,
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40.0))),
-                fixedSize: MaterialStateProperty.all(const Size(200, 200)),
-              ),
-              label: Text(
-                button,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
-                ),
-              ),
-            )
-          ]),
+    return StreamProvider<QuerySnapshot?>.value(
+      value: getDoc('rooms').doc,
+      initialData: null,
+      child: GridView.count(
+        crossAxisSpacing: 10.0,
+        mainAxisSpacing: 10.0,
+        crossAxisCount: 2,
+        children: const [
+          RoomButton("Living Room", Icon(Icons.tv, color: Colors.white)),
+          RoomButton("Bedroom", Icon(Icons.bed, color: Colors.white))
+        ],
+      ),
     );
   }
 }
-*/
-
-/*
-
-            <uses-permission android:name="android.permission.BLUETOOTH" />  
-	          <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />  
-	          <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-*/

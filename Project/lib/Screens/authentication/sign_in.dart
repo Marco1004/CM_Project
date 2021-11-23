@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:deliverable1/services/auth.dart';
 
@@ -32,23 +31,3 @@ class _SignInState extends State<SignIn> {
     );
   }
 }
-/*
-() async {
-              await _auth.signInAnon();
-            }
-            */
-
-/*
-AsyncButtonBuilder(
-              child: Text(),
-              onPressed: () async {
-                await Future.delayed(Duration(seconds: 1));
-              },
-              builder: (context, child, callback, _) {
-                return ElevatedButton(
-                  onPressed: callback,
-                  child: child,
-                );
-              },
-            ),
-            */
