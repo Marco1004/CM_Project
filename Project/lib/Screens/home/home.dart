@@ -89,10 +89,11 @@ class RoomsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<QuerySnapshot?>.value(
+    /*return StreamProvider<QuerySnapshot?>.value(
       value: getDoc('rooms').doc,
       initialData: null,
-      child: GridView.count(
+      child: 
+      /*GridView.count(
         crossAxisSpacing: 10.0,
         mainAxisSpacing: 10.0,
         crossAxisCount: 2,
@@ -100,7 +101,31 @@ class RoomsTab extends StatelessWidget {
           RoomButton("Living Room", Icon(Icons.tv, color: Colors.white)),
           RoomButton("Bedroom", Icon(Icons.bed, color: Colors.white))
         ],
-      ),
+      ),*/
     );
+    */
+
+    /*FirebaseFirestore.instance
+        .collection('home')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        print(doc["room"]);
+      });
+    });
+    */
+    FirebaseFirestore.instance
+        .collection('home')
+        .doc('rooms')
+        .collection('rooms')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        RoomButton(
+            doc["type"].toString(), Icon(Icons.lightbulb, color: Colors.white));
+        //print(doc["type"]);
+      });
+    });
+    return Text("a");
   }
 }

@@ -25,7 +25,7 @@ class getDoc extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
-          //return data;
+          print(data);
         }
 
         return Text("loading");
@@ -35,8 +35,7 @@ class getDoc extends StatelessWidget {
 }
 
 
-/*
-class getDoc {
+/*class getDoc {
   final String documentId;
 
   getDoc(this.documentId);
@@ -46,5 +45,4 @@ class getDoc {
   Stream<QuerySnapshot> get doc {
     return home.snapshots();
   }
-}
-*/
+}*/
