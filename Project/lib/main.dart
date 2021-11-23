@@ -1,6 +1,7 @@
 //import 'dart:html';
 
 import 'package:deliverable1/services/auth.dart';
+import 'package:deliverable1/services/database.dart';
 import 'package:deliverable1/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,18 +19,26 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
-  final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User?>.value(
+    return MultiProvider(providers: [
+     
+      Provider<DatabaseManager>(
+        create: (_) => DatabaseManager(),
+      ),
+       StreamProvider<User?>.value(
       //create: (context) => context.read<AuthService>().user,
       initialData: null,
       value: AuthService().user,
       child: MaterialApp(
         home: Wrapper(),
       ),
-    );
+    )
+    ],
+    child: MaterialApp(home: Wrapper()),);
+
+   
     //
   }
 }

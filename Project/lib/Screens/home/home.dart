@@ -1,70 +1,112 @@
 import 'package:deliverable1/services/database.dart';
+import 'package:deliverable1/utility.dart';
 import 'package:flutter/material.dart';
 import '../custom_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late Future<List> data;
+  List info = [];
+  @override
+  void initState() {
+    data = DatabaseManager().getRooms();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Smart Home',
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-      ),
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.orange.shade100,
-            bottom: const TabBar(labelColor: Colors.black, tabs: [
-              Tab(text: "Rooms"),
-              Tab(text: "Devices"),
-            ]),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              // Navigator.pop(context);
+            },
           ),
-          drawer: Drawer(
-              child: ListView(
-            children: const [
-              ListTile(
-                leading: Icon(Icons.account_circle),
-                title: Text("User"),
-              ),
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text("Settings"),
-              ),
-            ],
-          )),
-          body: const TabBarView(children: [
-            RoomsTab(),
-            DevicesTab(),
-          ]),
+        ),
+        body: FutureBuilder(
+          future: data,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              context.read<DatabaseManager>().info_rooms =
+                  snapshot.data as List;
+              return RoomsTab();
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
         ),
       ),
     );
   }
 }
 
-/*
-class RoomsTab extends StatelessWidget {
+class RoomsTab extends StatefulWidget {
   const RoomsTab({Key? key}) : super(key: key);
 
   @override
+  State<RoomsTab> createState() => _RoomsTabState();
+}
+
+class _RoomsTabState extends State<RoomsTab> {
+  List info_room = [];
+
+  @override
+  void initState() {
+    info_room = context.read<DatabaseManager>().info_rooms;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      crossAxisSpacing: 10.0,
-      mainAxisSpacing: 10.0,
-      crossAxisCount: 2,
-      children: [
-        RoomButton("Living Room", Icon(Icons.tv, color: Colors.white)),
-        RoomButton("Bedroom", Icon(Icons.bed, color: Colors.white)),
-      ],
+    return Scaffold(
+      body: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 200,
+            childAspectRatio: 3 / 2,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20),
+        itemCount: info_room.length,
+        itemBuilder: (context, index) {
+          return ElevatedButton(
+            onPressed: () {
+              context.read<DatabaseManager>().selected_room = info_room[index];
+              //     Navigator.push(
+              // context, MaterialPageRoute(builder: (context) => Workout()));
+            },
+            child: Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Icon(
+                  getRoomsIcons(info_room[index]),
+                  color: Colors.black,
+                ),
+                Text(info_room[index]),
+              ],
+            )),
+          );
+        },
+      ),
     );
   }
 }
-*/
 
 class DevicesTab extends StatelessWidget {
   const DevicesTab({Key? key}) : super(key: key);
@@ -81,51 +123,5 @@ class DevicesTab extends StatelessWidget {
             "Thermometer", Icon(Icons.thermostat, color: Colors.white)),
       ],
     );
-  }
-}
-
-class RoomsTab extends StatelessWidget {
-  const RoomsTab({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    /*return StreamProvider<QuerySnapshot?>.value(
-      value: getDoc('rooms').doc,
-      initialData: null,
-      child: 
-      /*GridView.count(
-        crossAxisSpacing: 10.0,
-        mainAxisSpacing: 10.0,
-        crossAxisCount: 2,
-        children: const [
-          RoomButton("Living Room", Icon(Icons.tv, color: Colors.white)),
-          RoomButton("Bedroom", Icon(Icons.bed, color: Colors.white))
-        ],
-      ),*/
-    );
-    */
-
-    /*FirebaseFirestore.instance
-        .collection('home')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        print(doc["room"]);
-      });
-    });
-    */
-    FirebaseFirestore.instance
-        .collection('home')
-        .doc('rooms')
-        .collection('rooms')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        RoomButton(
-            doc["type"].toString(), Icon(Icons.lightbulb, color: Colors.white));
-        //print(doc["type"]);
-      });
-    });
-    return Text("a");
   }
 }
