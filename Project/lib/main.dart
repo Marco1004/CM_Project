@@ -22,23 +22,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(providers: [
-     
-      Provider<DatabaseManager>(
-        create: (_) => DatabaseManager(),
-      ),
-       StreamProvider<User?>.value(
-      //create: (context) => context.read<AuthService>().user,
-      initialData: null,
-      value: AuthService().user,
-      child: MaterialApp(
-        home: Wrapper(),
-      ),
-    )
-    ],
-    child: MaterialApp(home: Wrapper()),);
+    return MultiProvider(
+      providers: [
+        Provider<DatabaseManager>(
+          create: (_) => DatabaseManager(),
+        ),
+        StreamProvider<User?>.value(
+          //create: (context) => context.read<AuthService>().user,
+          initialData: null,
+          value: AuthService().user,
+          child: MaterialApp(
+            home: Wrapper(),
+          ),
+        )
+      ],
+      child: MaterialApp(home: Wrapper()),
+    );
 
-   
     //
   }
 }

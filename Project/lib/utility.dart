@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 IconData? getIcons(String name) {
   Map<String, IconData> x = {
     //rooms
-    'living room': Icons.tv,
-    'bedroom': Icons.bed_sharp,
-    'kitchen': Icons.kitchen,
-    'bathroom': Icons.shower,
+    'Living room': Icons.tv,
+    'Bedroom': Icons.bed_sharp,
+    'Kitchen': Icons.kitchen,
+    'Bathroom': Icons.shower,
 
     //devices
-    'light': Icons.lightbulb,
-    'thermometer': Icons.thermostat,
-    'ac': Icons.ac_unit,
-    'tv': Icons.tv,
+    'Light': Icons.lightbulb,
+    'Thermometer': Icons.thermostat,
+    'AC': Icons.ac_unit,
+    'TV': Icons.tv,
+    'Sound': Icons.speaker,
   };
 
   return x[name];
