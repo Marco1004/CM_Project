@@ -13,11 +13,15 @@ class Room extends StatefulWidget {
 }
 
 class _RoomState extends State<Room> {
-  late Future<QuerySnapshot?> data;
+  late Future<List?> data;
   List info_device = [];
+  String? room;
+  late var device;
+
   @override
   void initState() {
-    data = DatabaseManager().getDevices();
+    room = DatabaseManager().selected_room;
+    data = DatabaseManager().getDevices(room);
     super.initState();
   }
 
@@ -25,19 +29,33 @@ class _RoomState extends State<Room> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      body: FutureBuilder(
-          future: data,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              context.read<DatabaseManager>().info_devices =
-                  snapshot.data as QuerySnapshot?;
-              return RoomScreen();
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          }),
+      appBar: AppBar(
+        //: Text(room),
+        elevation: 0,
+        backgroundColor: Colors.black,
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.pop(context);
+            }),
+      ),
+      body: Container(
+        color: Colors.blueGrey.shade900,
+        child: FutureBuilder(
+            future: data,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                context.read<DatabaseManager>().info_devices =
+                    snapshot.data as List;
+                return RoomScreen();
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }),
+      ),
     ));
   }
 }
@@ -50,9 +68,9 @@ class RoomScreen extends StatefulWidget {
 }
 
 class _RoomScreenState extends State<RoomScreen> {
-  QuerySnapshot? info_device;
+  List info_device = [];
   String? room;
-  DocumentSnapshot? device;
+  var device;
 
   @override
   void initState() {
@@ -62,48 +80,60 @@ class _RoomScreenState extends State<RoomScreen> {
   }
 
   @override
-  /*
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 50.0,
-              childAspectRatio: 1.0,
-              crossAxisSpacing: 20.0,
-              mainAxisSpacing: 10.0),
-          //itemCount: info_device.,
-          itemBuilder: (context, index) {
-            return ElevatedButton(
-                onPressed: () {
-                  context.read<DatabaseManager>().selected_device =
-                      info_device[index];
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.black),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0))),
-                  //fixedSize: MaterialStateProperty.all(const Size(150, 150)),
-                ),
-                child: Center(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      getIcons(info_device[index]),
-                      color: Colors.white,
-                      size: 30.0,
-                    ),
-                    Text(
-                      info_device[index],
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                      ),
-                    )
-                  ],
-                )));
-          }),
+    return Column(
+      children: [
+        Container(
+          height: 250,
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.all(30.0),
+              itemCount: info_device.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: SizedBox(
+                    height: 50,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          context.read<DatabaseManager>().selected_device =
+                              info_device[index].data()['type'];
+                          device = info_device[index];
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Colors.blueGrey.shade400),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0))),
+                          fixedSize: MaterialStateProperty.all(
+                              const Size(100.0, 50.0)),
+                          //alignment: Alignment.center,
+                        ),
+                        child: Center(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              getIcons(info_device[index].data()['type']),
+                              color: Colors.white,
+                              size: 30.0,
+                            ),
+                            Text(
+                              info_device[index].data()['type'],
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20.0,
+                              ),
+                            )
+                          ],
+                        ))),
+                  ),
+                );
+              }),
+        ),
+        // get device information
+      ],
     );
-  }*/
+  }
 }

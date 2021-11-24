@@ -5,8 +5,9 @@ class DatabaseManager {
   List info_rooms = [];
   String? selected_room;
 
-  QuerySnapshot? info_devices;
+  List info_devices = [];
   String? selected_device;
+  var device;
 
   Future<List> getRooms() async {
     try {
@@ -21,17 +22,27 @@ class DatabaseManager {
     }
   }
 
-  Future<List?> getDevices() async {
+  Future<List> getDevices(String? room) async {
     try {
       var x = await FirebaseFirestore.instance
           .collection('home')
           .doc('devices')
           .collection('devices')
-          .where('room', isEqualTo: selected_room)
+          .where('room', isEqualTo: room)
           .get();
-      return x[];
+      return x.docs;
     } catch (e) {
-      return null;
+      return [];
     }
   }
+
+/*
+  Future<CollectionReference> getDeviceRef() async{
+    var x= await FirebaseFirestore.instance
+      .collection('home')
+      .doc('devices')
+      .collection(selected_device);
+    return
+  }
+*/
 }

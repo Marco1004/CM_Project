@@ -1,3 +1,4 @@
+import 'package:deliverable1/Screens/room.dart';
 import 'package:deliverable1/services/database.dart';
 import 'package:deliverable1/utility.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('SMART HOME'),
-          backgroundColor: Colors.orange.shade100,
+          backgroundColor: Colors.black,
           elevation: 0,
         ),
         drawer: Drawer(
@@ -44,19 +45,22 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        body: FutureBuilder(
-          future: data,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              context.read<DatabaseManager>().info_rooms =
-                  snapshot.data as List;
-              return RoomsTab();
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
+        body: Container(
+          color: Colors.blueGrey.shade900,
+          child: FutureBuilder(
+            future: data,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                context.read<DatabaseManager>().info_rooms =
+                    snapshot.data as List;
+                return RoomsTab();
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
         ),
       ),
     );
@@ -94,11 +98,12 @@ class _RoomsTabState extends State<RoomsTab> {
           return ElevatedButton(
             onPressed: () {
               context.read<DatabaseManager>().selected_room = info_room[index];
-              //     Navigator.push(
-              // context, MaterialPageRoute(builder: (context) => Workout()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Room()));
             },
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.black),
+              backgroundColor:
+                  MaterialStateProperty.all(Colors.blueGrey.shade400),
               shape: MaterialStateProperty.all(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0))),
               //fixedSize: MaterialStateProperty.all(const Size(150, 150)),
