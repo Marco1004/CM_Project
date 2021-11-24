@@ -76,52 +76,69 @@ class _RoomsTabState extends State<RoomsTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 200,
-            childAspectRatio: 3 / 2,
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 20),
-        itemCount: info_room.length,
-        itemBuilder: (context, index) {
-          return ElevatedButton(
-            onPressed: () {
-              context.read<DatabaseManager>().selected_room = info_room[index];
-              //     Navigator.push(
-              // context, MaterialPageRoute(builder: (context) => Workout()));
-            },
-            child: Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Icon(
-                  getRoomsIcons(info_room[index]),
-                  color: Colors.black,
-                ),
-                Text(info_room[index]),
-              ],
-            )),
-          );
-        },
+      appBar: AppBar(
+        title: Text('SMART HOME'),
+        backgroundColor: Colors.orange.shade100,
       ),
-    );
-  }
-}
-
-class DevicesTab extends StatelessWidget {
-  const DevicesTab({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.count(
-      crossAxisSpacing: 10.0,
-      mainAxisSpacing: 10.0,
-      crossAxisCount: 2,
-      children: const [
-        DeviceButton("Light", Icon(Icons.lightbulb, color: Colors.white)),
-        DeviceButton(
-            "Thermometer", Icon(Icons.thermostat, color: Colors.white)),
-      ],
+      drawer: Drawer(
+        child: ListView(
+          children: const [
+            ListTile(
+              leading: Icon(Icons.account_circle),
+              title: Text("User"),
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text("Settings"),
+            )
+          ],
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10),
+          itemCount: info_room.length,
+          itemBuilder: (context, index) {
+            return ElevatedButton(
+              onPressed: () {
+                context.read<DatabaseManager>().selected_room =
+                    info_room[index];
+                //     Navigator.push(
+                // context, MaterialPageRoute(builder: (context) => Workout()));
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.black),
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0))),
+                //fixedSize: MaterialStateProperty.all(const Size(150, 150)),
+              ),
+              child: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    getIcons(info_room[index]),
+                    color: Colors.white,
+                    size: 30.0,
+                  ),
+                  Text(
+                    info_room[index],
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
+                    ),
+                  )
+                ],
+              )),
+            );
+          },
+        ),
+      ),
     );
   }
 }
