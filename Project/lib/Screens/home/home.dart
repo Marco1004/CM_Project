@@ -1,14 +1,9 @@
-import 'package:deliverable1/Screens/room.dart';
+import 'package:deliverable1/Screens/home/cam_tab.dart';
+import 'package:deliverable1/Screens/home/home_tab.dart';
+import 'package:deliverable1/Screens/home/map_tab.dart';
 import 'package:deliverable1/services/database.dart';
-import 'package:deliverable1/utility.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import '../custom_button.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -103,130 +98,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
-  }
-}
-
-class HomeTab extends StatefulWidget {
-  const HomeTab({Key? key}) : super(key: key);
-
-  @override
-  State<HomeTab> createState() => _RoomsTabState();
-}
-
-class _RoomsTabState extends State<HomeTab> {
-  List info_room = [];
-
-  @override
-  void initState() {
-    info_room = context.read<DatabaseManager>().info_rooms;
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 1,
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 10),
-        itemCount: info_room.length,
-        itemBuilder: (context, index) {
-          return ElevatedButton(
-            onPressed: () {
-              context.read<DatabaseManager>().selected_room = info_room[index];
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Room()));
-            },
-            style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Colors.blueGrey.shade500),
-              shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0))),
-              //fixedSize: MaterialStateProperty.all(const Size(150, 150)),
-            ),
-            child: Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  getIcons(info_room[index]),
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-                Text(
-                  info_room[index],
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                  ),
-                )
-              ],
-            )),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class CamTab extends StatefulWidget {
-  const CamTab({Key? key}) : super(key: key);
-
-  @override
-  _CamTabState createState() => _CamTabState();
-}
-
-class _CamTabState extends State<CamTab> {
-  XFile? _image;
-  Future<dynamic> getImage() async {
-    try {
-      final XFile? photo =
-          await ImagePicker().pickImage(source: ImageSource.camera);
-      setState(() {
-        _image = photo;
-      });
-    } catch (e) {
-      print('Failed operation');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: FloatingActionButton(
-      onPressed: () {
-        getImage();
-      },
-      heroTag: 'Image',
-      tooltip: 'Take a photo',
-      child: const Icon(Icons.camera_alt),
-    ));
-  }
-}
-
-class MapTab extends StatefulWidget {
-  const MapTab({Key? key}) : super(key: key);
-
-  @override
-  _MapTabState createState() => _MapTabState();
-}
-
-class _MapTabState extends State<MapTab> {
-  static const _initialCameraPosition = CameraPosition(
-    target: LatLng(37.773972, -122.431297),
-    zoom: 11.5,
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: GoogleMap(
-      myLocationButtonEnabled: false,
-      zoomControlsEnabled: false,
-      initialCameraPosition: _initialCameraPosition,
-    ));
   }
 }
