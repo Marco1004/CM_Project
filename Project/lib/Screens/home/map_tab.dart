@@ -15,9 +15,12 @@ class MapTab extends StatefulWidget {
 
 class _MapTabState extends State<MapTab> {
   late Future<List?> data;
-  List info_location = [];
+  List info = [];
+  List<Marker> markers = [];
+
   late Future<GeoPoint?> locat;
 
+  int aux = 1;
   @override
   final selected_home = 'home';
   void initState() {
@@ -26,19 +29,35 @@ class _MapTabState extends State<MapTab> {
   }
 
   static const _initialCameraPosition = CameraPosition(
-    target: LatLng(37.773972, -122.431297),
+    target: LatLng(40.639, -8.65),
     zoom: 11.5,
   );
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: GoogleMap(
-      myLocationButtonEnabled: false,
-      zoomControlsEnabled: false,
-      initialCameraPosition: _initialCameraPosition,
-      //markers: _updateMarkers(),
-    ));
+    return FutureBuilder(
+      future: data,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          info = snapshot.data as List;
+          for (var element in info) {
+            GeoPoint x = element.data()['location'];
+            markers.add(Marker(
+              markerId: MarkerId(aux.toString()),
+              position: LatLng(x.latitude, x.longitude),
+            ));
+          }
+
+          return GoogleMap(
+              myLocationButtonEnabled: true,
+              zoomControlsEnabled: false,
+              initialCameraPosition: _initialCameraPosition,
+              markers: markers.toSet());
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 }
 
