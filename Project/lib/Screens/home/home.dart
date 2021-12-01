@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -179,18 +180,30 @@ class CamTab extends StatefulWidget {
 }
 
 class _CamTabState extends State<CamTab> {
-  Future getImage() async {
+  XFile? _image;
+  Future<dynamic> getImage() async {
     try {
       final XFile? photo =
           await ImagePicker().pickImage(source: ImageSource.camera);
-    } on PlatformException catch (e) {
+      setState(() {
+        _image = photo;
+      });
+    } catch (e) {
       print('Failed operation');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Center(
+        child: FloatingActionButton(
+      onPressed: () {
+        getImage();
+      },
+      heroTag: 'Image',
+      tooltip: 'Take a photo',
+      child: const Icon(Icons.camera_alt),
+    ));
   }
 }
 
