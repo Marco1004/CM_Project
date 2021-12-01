@@ -9,6 +9,9 @@ class DatabaseManager {
   String? selected_device;
   var device;
 
+  String? selected_home;
+  List info_locations = [];
+
   Future<List> getRooms() async {
     try {
       var x = await FirebaseFirestore.instance
@@ -30,6 +33,15 @@ class DatabaseManager {
           .collection('devices')
           .where('room', isEqualTo: room)
           .get();
+      return x.docs;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List> getLocation() async {
+    try {
+      var x = await FirebaseFirestore.instance.collection('user').get();
       return x.docs;
     } catch (e) {
       return [];

@@ -8,10 +8,10 @@ class HomeTab extends StatefulWidget {
   const HomeTab({Key? key}) : super(key: key);
 
   @override
-  State<HomeTab> createState() => _RoomsTabState();
+  State<HomeTab> createState() => _HomeTabState();
 }
 
-class _RoomsTabState extends State<HomeTab> {
+class _HomeTabState extends State<HomeTab> {
   List info_room = [];
 
   @override
