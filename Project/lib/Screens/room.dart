@@ -99,8 +99,8 @@ class _RoomScreenState extends State<RoomScreen> {
                           context.read<DatabaseManager>().selected_device =
                               info_device[index].data()['type'];
                           //device_var();
-                          print(
-                              context.read<DatabaseManager>().selected_device);
+                          context.read<DatabaseManager>().device =
+                              info_device[index];
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(

@@ -13,17 +13,16 @@ class _device_varState extends State<device_var> {
   var device;
   @override
   void initState() {
-    print("Here!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    device = context.read<DatabaseManager>().selected_device;
+    device = context.read<DatabaseManager>().device;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (device == null) {
+    if (device.data()['type'] == null) {
       return Text("Select a device");
     }
-    if (device == "Light") {
+    if (device.data()['type'] == "Light") {
       return Container(
           child: Column(
         children: [
@@ -52,19 +51,27 @@ class _device_varState extends State<device_var> {
         ],
       ));
     }
-    if (device == "Thermometer") {
+    if (device.data()['type'] == "Thermometer") {
       return Container();
     }
-    if (device == "AC") {
+    if (device.data()['type'] == "AC") {
       return Container(
           child: Column(
         children: [
-          Text("Humidity: ${device.data()['humidity']}"),
-          Text("Temperature: ${device.data()['temperature']}"),
+          Text("Humidity: ${device.data()['humidity'].toString()}",
+              style: const TextStyle(
+                color: Colors.amberAccent,
+                fontSize: 30.0,
+              )),
+          Text("Temperature: ${device.data()['temperature']}",
+              style: const TextStyle(
+                color: Colors.amberAccent,
+                fontSize: 30.0,
+              )),
         ],
       ));
     }
-    if (device == "Sound") {
+    if (device.data()['type'] == "Sound") {
       return Container(
           child: Column(
         children: [
