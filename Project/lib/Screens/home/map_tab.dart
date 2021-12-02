@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deliverable1/Screens/home/cam_tab.dart';
 import 'package:deliverable1/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/src/provider.dart';
 
 class MapTab extends StatefulWidget {
   const MapTab({Key? key}) : super(key: key);
@@ -30,7 +27,7 @@ class _MapTabState extends State<MapTab> {
 
   static const _initialCameraPosition = CameraPosition(
     target: LatLng(40.639, -8.65),
-    zoom: 11.5,
+    zoom: 15,
   );
 
   @override
@@ -60,5 +57,3 @@ class _MapTabState extends State<MapTab> {
     );
   }
 }
-
-//void _updateMarker()

@@ -27,6 +27,8 @@ class _RoomState extends State<Room> {
 
   @override
   Widget build(BuildContext context) {
+    print(room);
+    print("Here!!!!!!!!!!!!!!!!!!");
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
