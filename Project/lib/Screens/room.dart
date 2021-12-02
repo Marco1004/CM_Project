@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deliverable1/Screens/device_var.dart';
 import 'package:deliverable1/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
@@ -20,15 +20,13 @@ class _RoomState extends State<Room> {
 
   @override
   void initState() {
-    room = DatabaseManager().selected_room;
+    room = context.read<DatabaseManager>().selected_room;
     data = DatabaseManager().getDevices(room);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(room);
-    print("Here!!!!!!!!!!!!!!!!!!");
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -100,7 +98,9 @@ class _RoomScreenState extends State<RoomScreen> {
                         onPressed: () {
                           context.read<DatabaseManager>().selected_device =
                               info_device[index].data()['type'];
-                          device = info_device[index];
+                          //device_var();
+                          print(
+                              context.read<DatabaseManager>().selected_device);
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
@@ -134,7 +134,9 @@ class _RoomScreenState extends State<RoomScreen> {
                 );
               }),
         ),
-        // get device information
+        Container(
+          child: device_var(),
+        ),
       ],
     );
   }

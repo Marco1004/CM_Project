@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:deliverable1/services/database.dart';
 import 'package:provider/src/provider.dart';
@@ -14,13 +13,17 @@ class _device_varState extends State<device_var> {
   var device;
   @override
   void initState() {
-    device = context.read<DatabaseManager>().device;
+    print("Here!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    device = context.read<DatabaseManager>().selected_device;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (device.data()['type'] == "Light") {
+    if (device == null) {
+      return Text("Select a device");
+    }
+    if (device == "Light") {
       return Container(
           child: Column(
         children: [
@@ -49,10 +52,10 @@ class _device_varState extends State<device_var> {
         ],
       ));
     }
-    if (device.data()['type'] == "Thermometer") {
+    if (device == "Thermometer") {
       return Container();
     }
-    if (device.data()['type'] == "AC") {
+    if (device == "AC") {
       return Container(
           child: Column(
         children: [
@@ -61,7 +64,7 @@ class _device_varState extends State<device_var> {
         ],
       ));
     }
-    if (device.data()['type'] == "Sound") {
+    if (device == "Sound") {
       return Container(
           child: Column(
         children: [
